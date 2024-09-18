@@ -56,3 +56,32 @@ Contributions are welcome! Please read the CONTRIBUTING.md file for guidelines o
 ## License
 
 This project is licensed under the ISC License - see the [LICENSE.md](LICENSE.md) file for details.
+
+## Running as a Docker Container
+
+To run this application as a Docker container, follow these steps:
+
+1. Build the Docker image:
+
+   ```bash
+   docker build -t container-updater .
+   ```
+
+2. Run the container:
+
+   ```bash
+   docker run -d \
+     -p 3000:3000 \
+     -v /var/run/docker.sock:/var/run/docker.sock \
+     -e JWT_SECRET=your_jwt_secret_here \
+     --name container-updater \
+     container-updater
+   ```
+
+   Replace `your_jwt_secret_here` with your actual JWT secret.
+
+   Note: Mounting the Docker socket (-v /var/run/docker.sock:/var/run/docker.sock) gives the container access to the host's Docker daemon. Use this with caution in production environments.
+
+3. The application should now be running and accessible at `http://localhost:3000`.
+
+Remember to secure your JWT_SECRET and never commit it to version control. In production environments, consider using Docker secrets or environment variables injected at runtime for sensitive information.
