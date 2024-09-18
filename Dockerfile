@@ -21,9 +21,6 @@ RUN npm ci --only=production
 # Copy the rest of the application code
 COPY --chown=node:node . .
 
-ARG JWT_SECRET
-ENV JWT_SECRET=${JWT_SECRET}
-
 # Build the TypeScript code
 RUN npm run build
 
@@ -34,4 +31,4 @@ USER node
 EXPOSE 3000
 
 # Run the application
-CMD ["node", "dist/app.js"]
+CMD ["npm run start"]
