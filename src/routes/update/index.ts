@@ -20,7 +20,7 @@ const update: FastifyPluginAsync = async (fastify): Promise<void> => {
         }
       }
     },
-    handler: async (request, reply) => {
+    handler: async (request) => {
       const { appName } = request.body;
       fastify.log.info({ reqId: request.id, appName }, 'Received update request');
 

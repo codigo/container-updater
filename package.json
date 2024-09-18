@@ -9,8 +9,8 @@
   },
   "scripts": {
     "test": "node --experimental-loader ts-node/esm --test \"test/**/*.test.ts\"",
-    "lint": "eslint . --ext .ts",
-    "lint:fix": "eslint . --ext .ts --fix",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
     "build": "tsc",
     "start": "node dist/app.js",
     "dev": "concurrently \"tsc --watch\" \"node --watch dist/app.js\""
@@ -28,6 +28,7 @@
     "uuid": "^10.0.0"
   },
   "devDependencies": {
+    "@eslint/js": "^9.10.0",
     "@types/node": "^22.5.5",
     "@types/uuid": "^10.0.0",
     "@typescript-eslint/eslint-plugin": "^8.6.0",

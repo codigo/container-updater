@@ -1,3 +1,4 @@
+import { env } from 'process';
 import { test } from 'node:test';
 import * as assert from 'node:assert';
 import Fastify, { type FastifyInstance } from 'fastify';
@@ -29,8 +30,8 @@ fi
 `, { mode: 0o755 });
 
 		// Modify PATH to include our fake docker
-		originalPath = process.env.PATH || '';
-		process.env.PATH = `${tmpDir}:${originalPath}`;
+		originalPath = env.PATH || '';
+		env.PATH = `${tmpDir}:${originalPath}`;
 
 		const { default: dockerServiceUpdate } = await import('../../src/plugins/dockerServiceUpdate.js');
 
@@ -40,7 +41,7 @@ fi
 
 	t.afterEach(async () => {
 		// Restore original PATH
-		process.env.PATH = originalPath;
+		env.PATH = originalPath;
 
 		// Clean up temporary directory
 		await fs.rm(tmpDir, { recursive: true, force: true });
