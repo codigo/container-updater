@@ -1,3 +1,4 @@
+import { env } from 'process';
 import { test } from 'node:test';
 import * as assert from 'node:assert';
 import Fastify, { type FastifyInstance } from 'fastify';
@@ -7,7 +8,7 @@ test('jwtAuth plugin', async (t) => {
   let fastify: FastifyInstance;
 
   t.beforeEach(async () => {
-    process.env.JWT_SECRET = 'test-secret';
+    env.JWT_SECRET = 'test-secret';
     fastify = Fastify();
   });
 
@@ -16,18 +17,13 @@ test('jwtAuth plugin', async (t) => {
   });
 
   await t.test('should register successfully', async () => {
-    try {
-      await fastify.register(jwtAuth);
-      assert.ok(fastify.jwt, 'fastify.jwt should be defined');
-      assert.ok(fastify.authenticate, 'fastify.authenticate should be defined');
-    } catch (error) {
-      console.error('Error in registration test:', error);
-      throw error;
-    }
+    await fastify.register(jwtAuth);
+    assert.ok(fastify.jwt, 'fastify.jwt should be defined');
+    assert.ok(fastify.authenticate, 'fastify.authenticate should be defined');
   });
 
   await t.test('should throw error if JWT_SECRET is not set', async () => {
-    delete process.env.JWT_SECRET;
+    delete env.JWT_SECRET;
     await assert.rejects(
       async () => {
         await fastify.register(jwtAuth);
@@ -41,8 +37,9 @@ test('jwtAuth plugin', async (t) => {
 
   await t.test('should sign and verify JWT', async () => {
     await fastify.register(jwtAuth);
+    interface TokenPayload { userId: number }
     const token = fastify.jwtUtils.sign({ userId: 1 });
-    const decoded = fastify.jwtUtils.verify(token);
+    const decoded = fastify.jwtUtils.verify(token) as TokenPayload;
     assert.equal(decoded.userId, 1);
   });
 

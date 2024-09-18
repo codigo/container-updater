@@ -1,16 +1,18 @@
 import fp from 'fastify-plugin';
 import jwt from '@fastify/jwt';
 import type { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
+import { env } from 'process';
+import { SignPayloadType } from '@fastify/jwt';
 
 async function jwtAuth(fastify: FastifyInstance) {
   fastify.log.info('Registering JWT authentication plugin');
 
-  if (!process.env.JWT_SECRET) {
+  if (!env.JWT_SECRET) {
     throw new Error('JWT_SECRET environment variable is not set');
   }
 
   fastify.register(jwt, {
-    secret: process.env.JWT_SECRET
+    secret: env.JWT_SECRET
   });
 
   fastify.decorate('authenticate', async function(request: FastifyRequest, reply: FastifyReply) {
@@ -25,7 +27,7 @@ async function jwtAuth(fastify: FastifyInstance) {
 
   fastify.decorate('jwtUtils', {
     decode: (token: string) => fastify.jwt.decode(token),
-    sign: (payload: any) => fastify.jwt.sign(payload),
+    sign: (payload: SignPayloadType) => fastify.jwt.sign(payload),
     verify: (token: string) => fastify.jwt.verify(token)
   });
 
@@ -38,9 +40,9 @@ declare module 'fastify' {
   interface FastifyInstance {
     authenticate: (request: FastifyRequest, reply: FastifyReply) => Promise<void>;
     jwtUtils: {
-      sign: (payload: any) => string;
-      verify: (token: string) => any;
-      decode: (token: string) => string | null;
+      sign: (payload: SignPayloadType) => string;
+      verify: (token: string) => SignPayloadType;
+      decode: (token: string) => string | Record<string, unknown> | null;
     };
   }
 }

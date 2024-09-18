@@ -1,4 +1,5 @@
 import { FastifyInstance } from 'fastify';
+import { env } from 'process';
 import { test } from 'node:test';
 import * as assert from 'node:assert';
 import * as fs from 'fs/promises';
@@ -11,7 +12,7 @@ import dockerServiceUpdate from '../../src/plugins/dockerServiceUpdate.js'
 import update from '../../src/routes/update/index.js'
 
 test('update route', async (t) => {
-  process.env.JWT_SECRET = 'test-secret';
+  env.JWT_SECRET = 'test-secret';
   let tmpDir: string;
   let originalPath: string;
 
@@ -34,8 +35,8 @@ test('update route', async (t) => {
       fi
     `, { mode: 0o755 });
     // Modify PATH to include our fake docker
-    originalPath = process.env.PATH || '';
-    process.env.PATH = `${tmpDir}:${originalPath}`;
+    originalPath = env.PATH || '';
+    env.PATH = `${tmpDir}:${originalPath}`;
   })
 
   t.afterEach(async () => {
