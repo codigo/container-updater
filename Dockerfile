@@ -15,8 +15,7 @@ WORKDIR /usr/src/app
 COPY package*.json ./
 
 # Install dependencies
-RUN npm -g install typescript
-RUN npm ci --only=production
+RUN npm install
 
 # Copy the rest of the application code
 COPY --chown=node:node . .
