@@ -30,4 +30,4 @@ USER node
 EXPOSE 3000
 
 # Run the application
-CMD ["npm run start"]
+CMD ["npm", "run", "start"]
