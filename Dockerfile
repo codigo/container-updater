@@ -5,12 +5,12 @@ FROM node:22-alpine
 RUN apk add --no-cache docker-cli
 
 # Add docker group and add node user to it
-RUN groupadd -g 988 docker && usermod -aG docker node
+RUN addgroup -g 988 -S docker && adduser node docker
 
 # Set the working directory in the container
 WORKDIR /usr/src/app
 
-# Copy package.json and package-lock.json
+# Copy package.json and package-lock.json to the working directory
 COPY package*.json ./
 
 # Install dependencies
