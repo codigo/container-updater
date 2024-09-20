@@ -4,9 +4,8 @@ FROM node:22-alpine
 # Install Docker CLI
 RUN apk add --no-cache docker-cli
 
-# Add node user to docker group
-RUN addgroup -g 998 docker
-RUN adduser node docker
+# Add docker group and add node user to it
+RUN groupadd -g 988 docker && usermod -aG docker node
 
 # Set the working directory in the container
 WORKDIR /usr/src/app
