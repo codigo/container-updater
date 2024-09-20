@@ -1,4 +1,4 @@
-name: Test Servic
+name: Test Service
 
 on:
   pull_request:
