@@ -38,12 +38,13 @@ if (import.meta.url === `file://${process.argv[1]}`) {
     }
   });
 
-  server.register(app);
+  await server.register(app);
 
   const start = async () => {
     try {
-      await server.listen({ port: 3000 });
-      server.log.info(`Server listening on ${server.server.address()}`);
+      await server.listen({ host: '0.0.0.0', port: 3000 });
+      server.log.info({ addresses: server.addresses() }, 'Server listening on');
+      server.log.info({ routes: server.printRoutes() }, 'Registered routes');
     } catch (err) {
       server.log.error(err);
       process.exit(1);
