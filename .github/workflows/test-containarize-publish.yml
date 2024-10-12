@@ -41,6 +41,7 @@ jobs:
           echo "TAG=$(jq -r '.version' package.json)" >> $GITHUB_ENV && \
           echo "NAME=$(jq -r '.name' package.json)" >> $GITHUB_ENV
 
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
@@ -60,6 +61,7 @@ jobs:
             ${{ vars.CONTAINER_REGISTRY_URL }}/codigo/${{ env.NAME }}:latest
           build-args: |
             JWT_SECRET=${{ secrets.JWT_SECRET }}
+            DOCKER_GROUP_ID=${{ vars.DOCKER_GROUP_ID }}
 
   launch-update:
     name: Trigger Container Update
