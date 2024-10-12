@@ -1,7 +1,7 @@
 {
   "type": "module",
   "name": "container-updater",
-  "version": "1.0.1",
+  "version": "1.0.0",
   "description": "A service to update containers in a docker swarm installed in the same machine",
   "main": "dist/app.js",
   "directories": {
